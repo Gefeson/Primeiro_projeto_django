@@ -1,0 +1,16 @@
+#Arquivos python compilados e cache
+__pycache__
+*.python
+*&py.class
+
+#arquivos de midia
+media/
+
+#arquivos estaticos coletados
+staticfiles/
+
+#ambiente vitual
+.venv/
+
+#arquivo de variaveis de ambiente
+.env

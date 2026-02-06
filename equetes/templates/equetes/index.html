@@ -1,0 +1,23 @@
+{% extends "equetes/base.html" %}
+
+{% block title %}
+Lista de Enquetes
+{% endblock %}
+
+{% block content %}
+<h1>Enquetes Recentes</h1>
+
+{% if lista_questoes_recentes %}
+    <ul>
+        {% for questao in lista_questoes_recentes %}
+            <li>
+                <a href="{% url 'equetes:detalhe' questao.id %}">
+                    {{ questao.descricao }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h1>Nenhuma enquete disponível.</h1>
+{% endif %}
+{% endblock %}

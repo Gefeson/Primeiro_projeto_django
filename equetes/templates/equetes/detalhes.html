@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Enquete</title>
+</head>
+<body>
+    <header>
+        <h1>Portal de Enquetes - Detalhes</h1>
+    </header>
+
+    <main>
+        <h1>{{ questao.descricao }}</h1>
+
+        <ul>
+            {% for alternativa in questao.alternativa_set.all %}
+                <li>{{ alternativa.descricao }}</li>
+            {% empty %}
+                <li>Nenhuma alternativa cadastrada.</li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 - Futuro Digital</p>
+    </footer>
+</body>
+</html>
