@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 if not DEBUG:
-    default_db_url = os.envirn.get('DJANGO_DB_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    default_db_url = os.environ.get('DJANGO_DB_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}')
     DATABASES = {
         'default': dj_database_url.config(
             default = default_db_url,
