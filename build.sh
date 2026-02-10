@@ -12,7 +12,7 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 #cria superusuario se não existir
-if [ "$SUPERUSER_NAME" ]; then
+if ["$SUPERUSER_NAME"]; then
     python manage.py shell << END
 from django.contrib.auth import get_user_model
 User = get_user_model()
