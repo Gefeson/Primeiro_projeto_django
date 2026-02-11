@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from equetes.models import Questao
 from django.db.models import F
 from django.urls import reverse
-from models import Questao, Alternativa
+from equetes.models import Questao, Alternativa
 
 
 def index(request):

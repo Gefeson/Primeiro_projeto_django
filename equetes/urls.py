@@ -1,6 +1,5 @@
 from django.urls import path
 from equetes import views
-from . import views
 
 app_name = "equetes"
 urlpatterns = [
