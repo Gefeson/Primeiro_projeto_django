@@ -1,7 +1,6 @@
 from urllib import request
 from django.shortcuts import get_object_or_404, render 
 from django.http import HttpResponse, HttpResponseRedirect
-from equetes.models import Questao
 from django.db.models import F
 from django.urls import reverse
 from equetes.models import Questao, Alternativa
