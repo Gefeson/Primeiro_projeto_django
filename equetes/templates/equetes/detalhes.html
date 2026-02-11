@@ -1,3 +1,24 @@
+<!--Atualização para formulário de votação-->
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="{% url 'equetes:voto' questao.id %}" method="post">{% csrf_token %}
+<fieldset>
+    <legend><h1>{{questao.descricao}}<h1></legend>
+    {% if error_message %}<p><strong>{{error_message }}<strong></p>
+    {% endif %}
+    {% for alternativa in questao.alternativa_set.all %}
+    <input type="radio" name="alternativa" id="alternativa{{ forloop.counter }}" 
+    value="{{ alternativa.id }}">
+    <label for="alternativa{{ forloop.counter }}">{{ alternativa.descricao }} </label>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Votar">
+</form>
+{% endblock %}
+
+
+<!--
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -27,3 +48,4 @@
     </footer>
 </body>
 </html>
+-->
