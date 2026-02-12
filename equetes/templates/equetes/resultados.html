@@ -1,12 +1,12 @@
-{% extends 'base.html' %} 
+{% extends 'equetes/base.html' %} 
  
 {% block content %} 
-<h1>{{ questao.texto_questao }}</h1> 
+<h1>{{ questao.descricao }}</h1> 
  
 <ul class="list-group mb-3"> 
 {% for alternativa in questao.alternativa_set.all %} 
     <li class="list-group-item d-flex justify-content-between align-items-center"> 
-        {{ alternativa.texto_alternativa }} 
+        {{ alternativa.descricao }} 
         <span class="badge bg-primary rounded-pill"> 
             {{ alternativa.votos }} voto{{ alternativa.votos|pluralize }} 
         </span> 

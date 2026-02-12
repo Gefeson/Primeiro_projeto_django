@@ -1,5 +1,5 @@
 <!--Atualização para formulário de votação-->
-{% extends 'base.html' %}
+{% extends 'equetes/base.html' %}
 
 {% block content %}
 <form action="{% url 'equetes:voto' questao.id %}" method="post">{% csrf_token %}
