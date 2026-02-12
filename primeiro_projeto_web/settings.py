@@ -27,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DJANGO_DEBUB', default=0))
+DEBUG = os.environ.get('DJANGO_DEBUG', '0') =='1'
 
 #ALLOWED_HOSTS = ['127.0.0.1','localhost']
-ALLOWED_HOSTS = str(os.environ.get('DJANGO_ALLOWED_HOST')).split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOST').split(',')
 
 
 # Application definition
