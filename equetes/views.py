@@ -1,9 +1,9 @@
-from urllib import request
+
 from django.shortcuts import get_object_or_404, render 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
 from django.urls import reverse
-from equetes.models import Questao, Alternativa
+from .models import Questao, Alternativa
 
 
 def index(request):
@@ -17,20 +17,19 @@ def detalhes(request, questao_id):
 
 def voto(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
+
     try:
-        #tenta capturar o ID da alternativa vinda do questionario
-        selecionada = questao.alternativa_set.get(pk=request.POST['alternativa'])
-    except(KeyError, Alternativa.DoesNotExist):
-        # Se 'alternativa' não estiver no POST, exibe o formulário novamente com erro 
-        return render(request, 'equetes/detalhes.html',{'questao':questao,'error_message':"Você não selecionou uma opção válida"})
-    else:
-        #Incrementa o voto de forma segura no banco de dados
-        selecionada.votos = F('votos') + 1
-        selecionada.save()
-        
-        # Redireciona para a página de resultados após o sucesso 
-        # Isso evita que o usuário vote duas vezes se clicar em "Atualizar" no navegador 
-    return HttpResponseRedirect(reverse('equetes:resultados', args=(questao.id,))) 
+        alternativa_id = request.POST["alternativa"]
+        selecionada = questao.alternativa_set.get(pk=alternativa_id)
+    except (KeyError, Alternativa.DoesNotExist):
+        return render(request, "equetes/detalhes.html", {
+            "questao": questao,
+            "error_message": "Você não selecionou uma opção válida"
+        })
+
+    Alternativa.objects.filter(pk=selecionada.pk).update(votos=F("votos") + 1)
+    return HttpResponseRedirect(reverse("equetes:resultados", args=(questao.id,)))
+ 
 
 def resultados(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
