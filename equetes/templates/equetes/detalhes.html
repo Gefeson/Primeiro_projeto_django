@@ -4,9 +4,8 @@
 {% block content %}
 <form action="{% url 'equetes:voto' questao.id %}" method="post">{% csrf_token %}
 <fieldset>
-    <legend><h1>{{questao.descricao}}<h1></legend>
-    {% if error_message %}<p><strong>{{error_message }}<strong></p>
-    {% endif %}
+    <legend><h1>{{questao.descricao}}</h1></legend>
+    {% if error_message %}<p><strong>{{error_message }}</strong></p>{% endif %}
     {% for alternativa in questao.alternativa_set.all %}
     <input type="radio" name="alternativa" id="alternativa{{ forloop.counter }}" 
     value="{{ alternativa.id }}">

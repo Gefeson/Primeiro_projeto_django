@@ -16,16 +16,10 @@ def detalhe(request, questao_id):
     return render(request, "equetes/detalhes.html", {"questao": questao})
 
 def voto(request, questao_id):
-    return HttpResponse(f"Você está votando na Questão {questao_id}.")
-
-def resultado(request, questao_id):
-    return HttpResponse(f"Você está vendo os resultados da Questão {questao_id}.")
-
-def voto(requeste, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
         #tenta capturar o ID da alternativa vinda do questionario
-        selecionada = questao.alternativa_set.get(pk=requeste.POST['alternativa'])
+        selecionada = questao.alternativa_set.get(pk=request.POST['alternativa'])
     except(KeyError, Alternativa.DoesNotExist):
         # Se 'alternativa' não estiver no POST, exibe o formulário novamente com erro 
         return render(request, 'equetes/detalhes.html',{'questao':questao,'error_message':"Você não selecionou uma opção válida"})
@@ -36,7 +30,7 @@ def voto(requeste, questao_id):
         
         # Redireciona para a página de resultados após o sucesso 
         # Isso evita que o usuário vote duas vezes se clicar em "Atualizar" no navegador 
-    return HttpResponseRedirect(reverse('enquetes:resultados', args=(questao.id,))) 
+    return HttpResponseRedirect(reverse('equetes:resultados', args=(questao.id,))) 
 
 def resultados(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
