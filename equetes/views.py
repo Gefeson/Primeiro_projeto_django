@@ -11,7 +11,7 @@ def index(request):
     contexto = {"lista_questoes_recentes": lista_questoes_recentes}
     return render(request, "equetes/index.html", contexto)
 
-def detalhe(request, questao_id):
+def detalhes(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     return render(request, "equetes/detalhes.html", {"questao": questao})
 
