@@ -11,7 +11,7 @@ Lista de Enquetes
     <ul>
         {% for questao in lista_questoes_recentes %}
             <li>
-                <a href="{% url 'equetes:detalhe' questao.id %}">
+                <a href="{% url 'equetes:detalhes' questao.id %}">
                     {{ questao.descricao }}
                 </a>
             </li>
