@@ -55,7 +55,7 @@ def nova_enquete(request):
         
     return render(request, 'equetes/cadastro.html', {'form': form})
 
-'''def nova_alternativa(request, questao_id):
+def nova_alternativa(request, questao_id):
     questao = get_object_or_404(Questao, pk= questao_id)
     if request.method == "POST":
         try:
@@ -64,4 +64,4 @@ def nova_enquete(request):
                 alternativa = form.save(commit=False)
                 alternativa.questao = questao
                 alternativa.save()
-            return redirect('equetes:index')'''
+            return redirect('equetes:index')
