@@ -20,4 +20,11 @@ Lista de Enquetes
 {% else %}
     <h1>Nenhuma enquete disponível.</h1>
 {% endif %}
+
+<a href="{% url 'equetes:nova_enquete' %}" class="btn btn-primary mb-3">
+ + Criar Nova Enquete
+</a>
+
+<a class="btn" href="javascript:history.back()"> Voltar</a>
+
 {% endblock %}

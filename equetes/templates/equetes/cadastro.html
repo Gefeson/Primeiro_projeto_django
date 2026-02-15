@@ -1,0 +1,33 @@
+{% extends 'equetes/base.html' %}
+
+{% block content %}
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Criar Nova Enquete</h2>
+    </div>
+    <div class="card-body">
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">Título da Enquete:</label>
+          {{ form.descricao }}
+          {# Exibe erros específicos do campo se houver #}
+          {% if form.descricao.errors %}
+            <div class="text-danger small">{{ form.descricao.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <p class="text-muted">Nota: Após criar a questão, você poderá adicionar alternativas na página de detalhes.</p>
+
+        <button type="submit" class="btn btn-success">Salvar Enquete</button>
+        <a href="{% url 'equetes:index' %}" class="btn btn-outlinesecondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
