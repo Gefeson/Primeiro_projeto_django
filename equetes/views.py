@@ -15,23 +15,35 @@ def index(request):
 
 def detalhes(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
-    return render(request, "equetes/detalhes.html", {"questao": questao})
+    #Criando uma instancia vazia no formulário
+    form_alternativa = AlternativaForm()
+    contexto = {
+        'questao':questao,
+        'form_alternativa':form_alternativa
+    }
+    
+    return render(request, "equetes/detalhes.html", contexto)
 
 def voto(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
-
     try:
-        alternativa_id = request.POST["alternativa"]
-        selecionada = questao.alternativa_set.get(pk=alternativa_id)
+    # Tenta capturar o ID da alternativa vindo do formulário
+        selecionada = questao.alternativa_set.get(pk=request.POST['alternativa'])
     except (KeyError, Alternativa.DoesNotExist):
-        return render(request, "equetes/detalhes.html", {
-            "questao": questao,
-            "error_message": "Você não selecionou uma opção válida"
-        })
+    # Se 'alternativa' não estiver no POST, exibe o formulário novamente com erro
+        return render(request, 'equetes/detalhes.html', {
+            'questao': questao,
+            'error_message': "Você não selecionou uma opção válida.",
+            })
+    else:
+    # Incrementa o voto de forma segura no banco de dados
+        selecionada.votos = F('votos') + 1
+        selecionada.save()
 
-    Alternativa.objects.filter(pk=selecionada.pk).update(votos=F("votos") + 1)
-    return HttpResponseRedirect(reverse("equetes:resultados", args=(questao.id,)))
- 
+    # Redireciona para a página de resultados após o sucesso
+    # Isso evita que o usuário vote duas vezes se clicar em "Atualizar" no navegador
+    return HttpResponseRedirect(reverse('equetes:resultados', args=(questao.id,)))
+
 
 def resultados(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
@@ -64,4 +76,7 @@ def nova_alternativa(request, questao_id):
                 alternativa = form.save(commit=False)
                 alternativa.questao = questao
                 alternativa.save()
-            return redirect('equetes:index')
+        except Exception as e:
+            #pode ser tratado ou exibido cosa ocorra algum erro
+            form.add_error(None, f"Ocorreu um erro inesperado. {e}")
+    return redirect('equetes:detalhes', questao_id=questao.id)
