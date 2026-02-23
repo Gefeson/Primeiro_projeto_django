@@ -1,50 +1,73 @@
-<!-- Atualização para formulário de votação -->
 {% extends 'equetes/base.html' %}
-
 {% block content %}
   <form action="{% url 'equetes:voto' questao.id %}" method="post">
     {% csrf_token %}
-    <fieldset>
+    <fieldset class="border p-3 mb-4">
       <legend>
         <h1>{{ questao.descricao }}</h1>
       </legend>
       {% if error_message %}
         <p>
-          <strong>{{ error_message }}</strong>
+          <strong class="alert alert-warning" role="alert">{{ error_message }}</strong>
         </p>
       {% endif %}
       {% for alternativa in questao.alternativa_set.all %}
-        <input type="radio" name="alternativa" id="alternativa{{ forloop.counter }}" value="{{ alternativa.id }}" />
-        <label for="alternativa{{ forloop.counter }}">{{ alternativa.descricao }}</label><br />
+        <input type="radio" class="form-check-input" name="alternativa" id="alternativa{{ forloop.counter }}" value="{{ alternativa.id }}" />
+        <label class="form-check-label" for="alternativa{{ forloop.counter }}">{{ alternativa.descricao }}</label>
+        {% if questao.usuario == user %}
+          <button type="submit" form="form_excluir_alternativa_{{ alternativa.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir esta alternativa?')"><i class="bi bi-trash3 me-1"></i>Excluir</button>
+          <a href="{% url 'equetes:editar_alternativa' alternativa.id %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-square"></i> Editar</a>
+        {% endif %}
+        <br />
+        
       {% endfor %}
     </fieldset>
-    <input type="submit" value="Votar" />
+    <input type="submit" class="btn btn-success" value="Votar" {% if not user.is_authenticated %} disabled {% endif%} />
   </form>
 
+  <!-- Formulário de exclusão de alternativa (não aparece visualmente). O botao de exclusao aciona ele -->
+  {% for alternativa in questao.alternativa_set.all %}
+    <form id="form_excluir_alternativa_{{ alternativa.id }}" action="{% url 'equetes:excluir_alternativa' alternativa.id %}" method="post" style="display:none;">
+      {% csrf_token %}
+    </form>
+  {% endfor %}
+
   <hr class="my-5" />
-  <div class="card border-primary">
-    <div class="card-header bg-primary text-white">
-      <strong>Administração: Adicionar Opção</strong>
-    </div>
-    <div class="card-body">
-      <form action="{% url 'equetes:nova_alternativa' questao.id %}" method="post">
-        {% csrf_token %}
-        <div class="row g-2">
-          <div class="col-md-9">{{ form_alternativa.descricao }}</div>
-          <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Adicionar</button>
+  {% if questao.usuario == user %}
+    <!-- Formulário para inclusão de alternativa -->
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-white">
+        <strong>Administração: Adicionar Alternativa</strong>
+      </div>
+      <div class="card-body">
+        <form action="{% url 'equetes:nova_alternativa' questao.id %}" method="post">
+          {% csrf_token %}
+          <div class="row g-2">
+            <div class="col-md-9">{{ form_alternativa.descricao }}</div>
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-primary w-100">Adicionar</button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-  {% if form.non_field_errors %}
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger mt-2">{{ error }}</div>
-    {% endfor %}
+    {% if form.non_field_errors %}
+      {% for error in form_alternativa.non_field_errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class="mt-4">
+      <a href="{% url 'equetes:index' %}" class="btn btn-outline-secondary">Voltar para a Lista</a>
+    </div>
+  {% else %}
+  {% if not user.is_authenticated %}  
+    <div class="alert alert-info">
+      Faça <a href="{% url 'login' %}">Login</a> para votar e gerenciar suas enquetes.
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+      Você pode votar nesta enquete, mas ela não é gerenciada por {{user.username}}. Faça um diferente <a href="{% url 'login' %}">Login</a> para gerenciar esta enquete.
+    </div>
   {% endif %}
-  <div class="mt-4">
-    <a href="{% url 'equetes:index' %}" class="btn btn-outline-secondary">Voltar para a Lista</a>
-  </div>
-  
+  {% endif %}
 {% endblock %}

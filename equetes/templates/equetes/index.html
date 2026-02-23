@@ -1,28 +1,29 @@
-{% extends "equetes/base.html" %}
+{% extends 'equetes/base.html' %}
 
 {% block title %}
-Lista de Enquetes
+  Lista de Enquetes
 {% endblock %}
 
 {% block content %}
-<h1>Enquetes Recentes</h1>
+  <h1>Enquetes Recentes</h1>
 
-{% if lista_questoes_recentes %}
+  {% if lista_questoes_recentes %}
     <ul>
-        {% for questao in lista_questoes_recentes %}
-            <li>
-                <a href="{% url 'equetes:detalhes' questao.id %}">
-                    {{ questao.descricao }}
-                </a>
-            </li>
-        {% endfor %}
+      {% for questao in lista_questoes_recentes %}
+        <li>
+          <a href="{% url 'equetes:detalhes' questao.id %}">{{ questao.descricao }}</a>
+        </li>
+      {% endfor %}
     </ul>
-{% else %}
+  {% else %}
     <h1>Nenhuma enquete disponível.</h1>
-{% endif %}
+  {% endif %}
 
-<a href="{% url 'equetes:nova_enquete' %}" class="btn btn-primary mb-3">
- + Criar Nova Enquete
-</a>
-
+  {% if user.is_authenticated %}
+    <a href="{% url 'equetes:nova_equete' %}" class="btn btn-primary mb-3">+ Criar Nova Enquete</a>
+  {% else %}
+    <div class="alert alert-info">
+      Faça <a href="{% url 'login' %}">Login</a> para votar ou gerenciar sua enquetes.
+    </div>
+  {% endif %}
 {% endblock %}

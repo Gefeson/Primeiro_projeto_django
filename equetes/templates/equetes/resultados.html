@@ -8,7 +8,7 @@
     <li class="list-group-item d-flex justify-content-between align-items-center"> 
         {{ alternativa.descricao }} 
         <span class="badge bg-primary rounded-pill"> 
-            {{ alternativa.votos }} voto{{ alternativa.votos|pluralize }} 
+            {{ alternativa.total_votos }} voto{{ alternativa.total_votos|pluralize }} 
         </span> 
     </li> 
 {% endfor %} 
@@ -17,9 +17,7 @@
 <a href="{% url 'equetes:detalhes' questao.id %}" class="btn btn-secondary">Votar 
 novamente?</a> 
 
-<a href="{% url 'equetes:index' questao.id %}" class="btn btn-secondary">
-    Voltar para o Início
-</a>
-
-
+<div class="mt-4">
+    <a href="{% url 'equetes:index' %}" class="btn btn-outline-secondary">Voltar para o início</a>
+</div>
 {% endblock %} 

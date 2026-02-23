@@ -1,0 +1,26 @@
+{% extends "equetes/base.html" %}
+
+{% block content %}
+<div class="container mt-3">
+  <h3>Editar alternativa</h3>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Descrição</label>
+      <input type="text"
+             name="descricao"
+             class="form-control"
+             value="{{ alternativa.descricao }}"
+             required>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Salvar</button>
+
+    <a href="{% url 'equetes:detalhes' alternativa.questao.id %}" class="btn btn-secondary">
+      Cancelar
+    </a>
+  </form>
+</div>
+{% endblock %}
