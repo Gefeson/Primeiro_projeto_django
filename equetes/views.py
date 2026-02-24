@@ -98,6 +98,10 @@ def nova_alternativa(request, questao_id):
 def excluir_alternativa(request, alternativa_id):
     alternativa = get_object_or_404(Alternativa, pk=alternativa_id)
     questao_id = alternativa.questao.id
+    questao = get_object_or_404(Questao, pk=questao_id)
+    
+    if questao.usuario!=request.user:
+        return HttpResponseForbidden()
     
     if request.method == "POST":
         alternativa.delete()

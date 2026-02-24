@@ -11,6 +11,10 @@ class Questao(models.Model):
     def __str__(self):
         return self.descricao
     
+    def foi_publicada_recentemente(self):
+        agora = timezone.now()
+        return agora - timezone.timedelta(days=1) <= self.data_pub <= agora
+    
     class Meta:
         verbose_name = "Questão"
         verbose_name_plural = "Questões"
@@ -30,11 +34,6 @@ class Alternativa(models.Model):
     def total_votos(self):
     # Conta quantos objetos Voto estão relacionados a esta alternativa
         return self.voto_set.count()
-        
-        
-def foi_publicada_recentemente(self):
-    agora = timezone.now()
-    return agora - timezone.timedelta(days=1) <= self.data_pub <= agora
 
 class Voto(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
